@@ -1,4 +1,4 @@
-﻿namespace Results_Viewer
+﻿namespace OpenFM_Results_Viewer
 {
     partial class MainView
     {

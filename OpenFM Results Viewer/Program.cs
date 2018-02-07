@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace OpenFM_Songs_Reader
+namespace OpenFM_Results_Viewer
 {
     static class Program
     {
@@ -16,7 +16,7 @@ namespace OpenFM_Songs_Reader
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainWindow());
+            Application.Run(new MainView());
         }
     }
 }

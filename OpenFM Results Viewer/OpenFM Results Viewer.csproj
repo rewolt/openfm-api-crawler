@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B4753F87-1111-4FDC-B06E-531AE7D497BE}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Results_Viewer</RootNamespace>
-    <AssemblyName>Results Viewer</AssemblyName>
+    <RootNamespace>OpenFM_Results_Viewer</RootNamespace>
+    <AssemblyName>OpenFM Results Viewer</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -74,6 +74,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

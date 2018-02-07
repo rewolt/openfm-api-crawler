@@ -1,15 +1,14 @@
 ﻿using Newtonsoft.Json;
-using Results_Viewer.Models.SavedObjects;
+using OpenFM_Results_Viewer.Models.SavedObjects;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Results_Viewer
+namespace OpenFM_Results_Viewer
 {
     public partial class MainView : Form
     {
-        private static string _apiMethod => "channels/long.json";
         private static string _fileName => "openfm_channels.json";
         private static string _saveDirectory;
 

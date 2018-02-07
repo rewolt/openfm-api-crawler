@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Results_Viewer.Models.SavedObjects
+namespace OpenFM_Results_Viewer.Models.SavedObjects
 {
     [Serializable]
     class Song

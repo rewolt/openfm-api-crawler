@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace Results_Viewer.Models.SavedObjects
+namespace OpenFM_Results_Viewer.Models.SavedObjects
 {
     class Channel
     {
