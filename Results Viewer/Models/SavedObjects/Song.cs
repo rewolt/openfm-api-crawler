@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OpenFM_API_Crawler.Models.SavedObjects
+namespace Results_Viewer.Models.SavedObjects
 {
+    [Serializable]
     class Song
     {
         public string Name { get; set; }

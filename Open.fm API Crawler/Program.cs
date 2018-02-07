@@ -1,18 +1,18 @@
-﻿using OpenFM_API_Crawler.Models;
-using System;
+﻿using System;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Linq;
 
 namespace OpenFM_API_Crawler
 {
     class Program
     {
-        private static string _apiUrl => "http://open.fm/api/api-ext/v2";
-        private static string _apiMethod => "channels/long.json";
+        private static string _apiUrl => "http://open.fm/api/";
+        private static string _apiChannelsList => "static/stations/stations_new.json";
+        private static string _apiChannelsData => "api-ext/v2/channels/long.json";
+        private static string _fileName => "openfm_channels.json";
+        private static string _saveDirectory;
 
         //// Browser header to API
         //GET /api/api-ext/v2/channels/long.json? _ = 1517168611.79 HTTP/1.1
@@ -28,6 +28,8 @@ namespace OpenFM_API_Crawler
 
         static void Main(string[] args)
         {
+            _saveDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
             if (!Uri.IsWellFormedUriString(_apiUrl, UriKind.Absolute))
             {
                 Console.WriteLine("Wrong URI");
@@ -37,43 +39,46 @@ namespace OpenFM_API_Crawler
                 
             var uri = new Uri(_apiUrl);
             var downloader = new JsonDownloader(uri);
-            downloader.ApiMethod = _apiMethod;
-            var jsonResponse = "";
-            jsonResponse = downloader.GetJson();
+            
+            var jsonChannelsList = downloader.GetJson(_apiChannelsList);
+            var jsonChannelsData = downloader.GetJson(_apiChannelsData);
 
-            var openChannels = JsonConvert.DeserializeObject<Models.API.ApiResponse>(jsonResponse);
+            var openChannelsList = JsonConvert.DeserializeObject<Models.APIChannels.ApiResponse>(jsonChannelsList);
+            var openChannelsData = JsonConvert.DeserializeObject<Models.APISongs.ApiResponse>(jsonChannelsData);
 
-            if(openChannels == null)
+            if(openChannelsList == null || openChannelsData == null)
             {
                 Console.WriteLine("Server returned null json");
                 Console.ReadKey();
                 return;
             }
+            
 
-
-
-
-
-            IFormatter formatter = new BinaryFormatter();
-            var localChannels = DeserializeItem(formatter);
+           
+            var localChannels = ReadFromLocal();
 
             var joinedChannels =
                 (
-                    from openChannel in openChannels.Channels
+                    from openChannel in openChannelsList.Channels
                     join localChannel in localChannels on openChannel.Id equals localChannel.Id
                     select openChannel
                 ).ToArray();
-            var missingChannels = openChannels.Channels.Except(joinedChannels);
+            var missingChannels = openChannelsList.Channels.Except(joinedChannels);
 
-            localChannels.AddRange(missingChannels.Select(x => new Models.SavedObjects.Channel { Id = x.Id }));
+            localChannels.AddRange(missingChannels.Select(x => new Models.SavedObjects.Channel { Id = x.Id, Name = x.Name }));
 
-            foreach (var localChannel in localChannels)
+            for (int i = 0; i < localChannels.Count; i++)
             {
-                var openTracks = openChannels.Channels.Where(x => x.Id == localChannel.Id).Single().Tracks.ToArray();
+                if (!openChannelsData.Channels.Any(x => x.Id == localChannels[i].Id))
+                    continue;
+
+                localChannels[i].Name = openChannelsList.Channels.Where(x => x.Id == localChannels[i].Id).First().Name;
+
+                var openTracks = openChannelsData.Channels.Where(x => x.Id == localChannels[i].Id).Single().Tracks.ToArray();
                 var joinedTracks =
                     (
                         from openSong in openTracks
-                        join localSong in localChannel.Songs on 
+                        join localSong in localChannels[i].Songs on
                         new
                         {
                             Artist = openSong.Song.Artist ?? "",
@@ -91,8 +96,8 @@ namespace OpenFM_API_Crawler
                     ).ToArray();
                 var missingSongs = openTracks.Except(joinedTracks);
 
-                localChannel.Songs
-                    .AddRange(missingSongs.Select(x => 
+                localChannels[i].Songs
+                    .AddRange(missingSongs.Select(x =>
                     new Models.SavedObjects.Song
                     {
                         Album = x.Song.Album == null ? "" : x.Song.Album.Title,
@@ -102,30 +107,27 @@ namespace OpenFM_API_Crawler
             }
 
 
-            SerializeItem(localChannels, formatter);
+            SaveToLocal(localChannels);
             Console.WriteLine("Done");
         }
 
-        public static void SerializeItem(List<Models.SavedObjects.Channel> channels, IFormatter formatter)
+        public static void SaveToLocal(List<Models.SavedObjects.Channel> channels)
         {
-            using (FileStream s = new FileStream("test.dat", FileMode.Create))
-            {
-                formatter.Serialize(s, channels);
-                s.Close();
-            }
+            var fullPath = _saveDirectory + "/" + _fileName;
+            File.WriteAllText(fullPath, JsonConvert.SerializeObject(channels));
         }
 
 
-        public static List<Models.SavedObjects.Channel> DeserializeItem(IFormatter formatter)
+        public static List<Models.SavedObjects.Channel> ReadFromLocal()
         {
-            if (!File.Exists("test.dat"))
-                return new List<Models.SavedObjects.Channel>();
+            var fullPath = _saveDirectory + "/" + _fileName;
+            var list = new List<Models.SavedObjects.Channel>();
 
-            using (FileStream s = new FileStream("test.dat", FileMode.Open))
-            {
-                List<Models.SavedObjects.Channel> t = (List<Models.SavedObjects.Channel>)formatter.Deserialize(s);
-                return t;
-            }
+            if (!File.Exists(fullPath))
+                return list;
+
+            list = JsonConvert.DeserializeObject<List<Models.SavedObjects.Channel>>(File.ReadAllText(fullPath));
+            return list;
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OpenFM_API_Crawler.Models.API
+namespace Results_Viewer.Models.API
 {
     class ApiResponse
     {

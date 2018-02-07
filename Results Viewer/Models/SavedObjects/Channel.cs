@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace OpenFM_API_Crawler.Models.SavedObjects
+namespace Results_Viewer.Models.SavedObjects
 {
     class Channel
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set;}
         public List<Song> Songs { get; set; } 
 
         public Channel()

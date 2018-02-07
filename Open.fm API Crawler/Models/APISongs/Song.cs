@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OpenFM_API_Crawler.Models.SavedObjects
+namespace OpenFM_API_Crawler.Models.APISongs
 {
     class Song
     {
-        public string Name { get; set; }
-        public string Album { get; set; }
+        public Album Album { get; set; }
+        public string Title { get; set; }
         public string Artist { get; set; }
     }
 }

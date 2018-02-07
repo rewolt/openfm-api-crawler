@@ -8,14 +8,13 @@ namespace OpenFM_API_Crawler
     class JsonDownloader
     {
         public Uri Url { get; set; }
-        public string ApiMethod { get; set; }
 
         public JsonDownloader(Uri apiUrl)
         {
             Url = apiUrl;
         }
 
-        public string GetJson()
+        public string GetJson(string apiMethod)
         {
             var client = new RestClient(Url);
 
@@ -23,7 +22,7 @@ namespace OpenFM_API_Crawler
             client.AddDefaultHeader("Accept-Encoding", "gzip, deflate");
             client.AddDefaultHeader("Accept-Language", "pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7");
 
-            var restRequest = new RestRequest(ApiMethod);
+            var restRequest = new RestRequest(apiMethod);
             var response = client.Execute(restRequest);
             
 

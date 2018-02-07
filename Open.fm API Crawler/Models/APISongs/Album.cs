@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OpenFM_API_Crawler.Models.API
+namespace OpenFM_API_Crawler.Models.APISongs
 {
     class Album
     {
