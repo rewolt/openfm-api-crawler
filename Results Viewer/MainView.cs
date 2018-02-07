@@ -2,13 +2,7 @@
 using Results_Viewer.Models.SavedObjects;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Results_Viewer
@@ -32,10 +26,11 @@ namespace Results_Viewer
 
         private void SortList(List<Channel> channelsList)
         {
+            channelsList.Sort((x, y) => { return x.Name.CompareTo(y.Name); });
+
             foreach(var channel in channelsList)
-            {
-                channel.Songs.Sort((x, y) => CompareSongs(x, y));
-            }
+                channel.Songs.Sort((x, y) => { return x.Artist.CompareTo(y.Artist); });
+            
         }
 
         private void TreeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
@@ -56,7 +51,7 @@ namespace Results_Viewer
 
             foreach(var channel in channelsList)
             {
-                var node = treeView.Nodes.Add(channel.Id.ToString());
+                var node = treeView.Nodes.Add(channel.Id.ToString(), channel.Name);
                 foreach (var song in channel.Songs)
                 {
                     var childNode = node.Nodes.Add($"[{song.Artist}] ({song.Album}) {song.Name}");
@@ -91,11 +86,6 @@ namespace Results_Viewer
             var channelsList = ReadFromLocal();
             SortList(channelsList);
             RefreshTree(channelsList);
-        }
-
-        private int CompareSongs(Song s1, Song s2)
-        {
-            return s1.Artist.CompareTo(s2.Artist);
         }
     }
 }
