@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OpenFM_Results_Viewer.Models.API
+namespace SharedModels.Models.API
 {
-    class Album
+    public class Album
     {
         public int? Year { get; set; }
         public string Cover_uri { get; set; }

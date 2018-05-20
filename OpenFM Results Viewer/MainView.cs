@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using OpenFM_Results_Viewer.Models.SavedObjects;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,7 +22,7 @@ namespace OpenFM_Results_Viewer
             RefreshTree(channelsList);
         }
 
-        private void SortList(List<Channel> channelsList)
+        private void SortList(List<SharedModels.Models.SavedObjects.Channel> channelsList)
         {
             channelsList.Sort((x, y) => { return x.Name.CompareTo(y.Name); });
 
@@ -44,7 +43,7 @@ namespace OpenFM_Results_Viewer
             System.Diagnostics.Process.Start(youtubeUrl + artistTitle);
         }
 
-        private void RefreshTree(List<Channel> channelsList)
+        private void RefreshTree(List<SharedModels.Models.SavedObjects.Channel> channelsList)
         {
             treeView.Nodes.Clear();
 
@@ -58,15 +57,15 @@ namespace OpenFM_Results_Viewer
             }
         }
 
-        private List<Models.SavedObjects.Channel> ReadFromLocal()
+        private List<SharedModels.Models.SavedObjects.Channel> ReadFromLocal()
         {
             var fullPath = _saveDirectory + "/" + _fileName;
-            var list = new List<Models.SavedObjects.Channel>();
+            var list = new List<SharedModels.Models.SavedObjects.Channel>();
 
             if (!File.Exists(fullPath))
                 return list;
 
-            list = JsonConvert.DeserializeObject<List<Models.SavedObjects.Channel>>(File.ReadAllText(fullPath));
+            list = JsonConvert.DeserializeObject<List<SharedModels.Models.SavedObjects.Channel>>(File.ReadAllText(fullPath));
             return list;
         }
 

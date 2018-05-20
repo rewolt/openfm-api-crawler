@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace OpenFM_Results_Viewer.Models.SavedObjects
+namespace SharedModels.Models.SavedObjects
 {
-    class Channel
+    public class Channel
     {
         public int Id { get; set; }
         public string Name { get; set;}

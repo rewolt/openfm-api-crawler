@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OpenFM_Results_Viewer.Models.API
+namespace SharedModels.Models.API
 {
-    class ApiResponse
+    public class ApiResponse
     {
         public List<Channel> Channels { get; set; }
         public double Creation_time { get; set; }

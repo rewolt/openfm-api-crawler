@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OpenFM_Results_Viewer.Models.API
+namespace SharedModels.Models.API
 {
-    class Track
+    public class Track
     {
         public double Begin { get; set; }
         public double End { get; set; }

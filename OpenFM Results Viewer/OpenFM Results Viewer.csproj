@@ -54,13 +54,6 @@
     <Compile Include="MainView.Designer.cs">
       <DependentUpon>MainView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\API\Album.cs" />
-    <Compile Include="Models\API\ApiResponse.cs" />
-    <Compile Include="Models\API\Channel.cs" />
-    <Compile Include="Models\API\Song.cs" />
-    <Compile Include="Models\API\Track.cs" />
-    <Compile Include="Models\SavedObjects\Channel.cs" />
-    <Compile Include="Models\SavedObjects\Song.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="MainView.resx">
@@ -89,6 +82,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SharedModels\SharedModels.csproj">
+      <Project>{84c34a44-661b-47aa-bdf4-3de86f5ad5c1}</Project>
+      <Name>SharedModels</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

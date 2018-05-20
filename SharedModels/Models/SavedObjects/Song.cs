@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OpenFM_Results_Viewer.Models.SavedObjects
+namespace SharedModels.Models.SavedObjects
 {
     [Serializable]
-    class Song
+    public class Song
     {
         public string Name { get; set; }
         public string Album { get; set; }

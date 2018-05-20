@@ -5,8 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OpenFM_WPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="531.499" Width="426.98">
     <Grid>
-        
+        <Button Content="Refresh" x:Name="bt_refresh" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="auto"/>
+        <Button Content="+" HorizontalAlignment="Right" Margin="0,10,30,0" VerticalAlignment="Top" Width="15"/>
+        <Button Content="-" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="15"/>
+        <TreeView HorizontalAlignment="Stretch" Margin="10,35,10,10" VerticalAlignment="Stretch"/>
+
     </Grid>
 </Window>
