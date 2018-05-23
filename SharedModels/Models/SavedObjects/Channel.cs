@@ -15,5 +15,10 @@ namespace SharedModels.Models.SavedObjects
         {
             Songs = new List<Song>();
         }
+
+        public override string ToString()
+        {
+            return $"Name ({Songs.Count})";
+        }
     }
 }

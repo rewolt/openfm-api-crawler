@@ -44,7 +44,7 @@ namespace OpenFM_API_Crawler
             var jsonChannelsData = downloader.GetJson(_apiChannelsData);
 
             var openChannelsList = JsonConvert.DeserializeObject<Models.APIChannels.ApiResponse>(jsonChannelsList);
-            var openChannelsData = JsonConvert.DeserializeObject<Models.APISongs.ApiResponse>(jsonChannelsData);
+            var openChannelsData = JsonConvert.DeserializeObject<SharedModels.Models.API.ApiResponse>(jsonChannelsData);
 
             if(openChannelsList == null || openChannelsData == null)
             {
@@ -65,7 +65,7 @@ namespace OpenFM_API_Crawler
                 ).ToArray();
             var missingChannels = openChannelsList.Channels.Except(joinedChannels);
 
-            localChannels.AddRange(missingChannels.Select(x => new Models.SavedObjects.Channel { Id = x.Id, Name = x.Name }));
+            localChannels.AddRange(missingChannels.Select(x => new SharedModels.Models.SavedObjects.Channel { Id = x.Id, Name = x.Name }));
 
             for (int i = 0; i < localChannels.Count; i++)
             {
@@ -98,7 +98,7 @@ namespace OpenFM_API_Crawler
 
                 localChannels[i].Songs
                     .AddRange(missingSongs.Select(x =>
-                    new Models.SavedObjects.Song
+                    new SharedModels.Models.SavedObjects.Song
                     {
                         Album = x.Song.Album == null ? "" : x.Song.Album.Title,
                         Artist = x.Song.Artist ?? "",
@@ -111,22 +111,22 @@ namespace OpenFM_API_Crawler
             Console.WriteLine("Done");
         }
 
-        public static void SaveToLocal(List<Models.SavedObjects.Channel> channels)
+        public static void SaveToLocal(List<SharedModels.Models.SavedObjects.Channel> channels)
         {
             var fullPath = _saveDirectory + "/" + _fileName;
             File.WriteAllText(fullPath, JsonConvert.SerializeObject(channels));
         }
 
 
-        public static List<Models.SavedObjects.Channel> ReadFromLocal()
+        public static List<SharedModels.Models.SavedObjects.Channel> ReadFromLocal()
         {
             var fullPath = _saveDirectory + "/" + _fileName;
-            var list = new List<Models.SavedObjects.Channel>();
+            var list = new List<SharedModels.Models.SavedObjects.Channel>();
 
             if (!File.Exists(fullPath))
                 return list;
 
-            list = JsonConvert.DeserializeObject<List<Models.SavedObjects.Channel>>(File.ReadAllText(fullPath));
+            list = JsonConvert.DeserializeObject<List<SharedModels.Models.SavedObjects.Channel>>(File.ReadAllText(fullPath));
             return list;
         }
     }

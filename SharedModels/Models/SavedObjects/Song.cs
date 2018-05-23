@@ -10,5 +10,10 @@ namespace SharedModels.Models.SavedObjects
         public string Name { get; set; }
         public string Album { get; set; }
         public string Artist { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Artist} - {Name} ({Album})";
+        }
     }
 }
