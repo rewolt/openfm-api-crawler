@@ -8,6 +8,5 @@ namespace OpenFM_API_Crawler.Models.APIChannels
     {
         public int Date { get; set; }
         public string Url { get; set; }
-
     }
 }

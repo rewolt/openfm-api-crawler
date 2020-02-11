@@ -1,16 +1,16 @@
 ﻿using System;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using OpenFM_API_Crawler.Services;
+using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace OpenFM_API_Crawler
 {
     class Program
     {
-        private static string _apiUrl => "http://open.fm/api/";
-        private static string _apiChannelsList => "static/stations/stations_new.json";
-        private static string _apiChannelsData => "api-ext/v2/channels/long.json";
+
         private static string _fileName => "openfm_channels.json";
         private static string _saveDirectory;
 
@@ -26,25 +26,15 @@ namespace OpenFM_API_Crawler
         // Accept-Language: pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7
         // Cookie: PWA_adbd=1; pvid=f29de175c69358e6ce40
 
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             _saveDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
-            if (!Uri.IsWellFormedUriString(_apiUrl, UriKind.Absolute))
-            {
-                Console.WriteLine("Wrong URI");
-                Console.ReadKey();
-                return;
-            }
-                
-            var uri = new Uri(_apiUrl);
-            var downloader = new JsonDownloader(uri);
+           
+            var downloader = new OpenFmRepository();
             
-            var jsonChannelsList = downloader.GetJson(_apiChannelsList);
-            var jsonChannelsData = downloader.GetJson(_apiChannelsData);
-
-            var openChannelsList = JsonConvert.DeserializeObject<Models.APIChannels.ApiResponse>(jsonChannelsList);
-            var openChannelsData = JsonConvert.DeserializeObject<SharedModels.Models.API.ApiResponse>(jsonChannelsData);
+            var openChannelsList = await downloader.GetChannelsList();
+            var openChannelsData = await downloader.GetChannelsData();
 
             if(openChannelsList == null || openChannelsData == null)
             {
@@ -114,7 +104,7 @@ namespace OpenFM_API_Crawler
         public static void SaveToLocal(List<SharedModels.Models.SavedObjects.Channel> channels)
         {
             var fullPath = _saveDirectory + "/" + _fileName;
-            File.WriteAllText(fullPath, JsonConvert.SerializeObject(channels));
+            File.WriteAllText(fullPath, JsonSerializer.Serialize(channels));
         }
 
 
@@ -126,7 +116,7 @@ namespace OpenFM_API_Crawler
             if (!File.Exists(fullPath))
                 return list;
 
-            list = JsonConvert.DeserializeObject<List<SharedModels.Models.SavedObjects.Channel>>(File.ReadAllText(fullPath));
+            list = JsonSerializer.Deserialize<List<SharedModels.Models.SavedObjects.Channel>>(File.ReadAllText(fullPath));
             return list;
         }
     }
