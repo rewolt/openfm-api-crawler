@@ -6,16 +6,16 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenFM_API_Crawler.Services
+namespace OpenFM_API_Crawler.Repositories
 {
-    class OpenFmRepository
+    class ApiRepository
     {
         private readonly string _apiUrl = "https://open.fm/api/";
         private readonly string _apiChannelsList = "static/stations/stations_new.json";
         private readonly string _apiChannelsData = "api-ext/v2/channels/long.json";
         private readonly HttpClient _client;
 
-        public OpenFmRepository()
+        public ApiRepository()
         {
             _client = new HttpClient();
             InitializeHttpClient();
@@ -38,15 +38,10 @@ namespace OpenFM_API_Crawler.Services
         public async Task<string> GetText(string apiMethod)
         {
             var response = await _client.GetAsync(apiMethod);
+            response.EnsureSuccessStatusCode();
 
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                var decompressed = DecompressStream(await response.Content.ReadAsStreamAsync());
-                return Encoding.UTF8.GetString(decompressed);
-            }
-                
-            else
-                throw new Exception($"Error. Server response: {response.StatusCode}");
+            var decompressedData = DecompressStream(await response.Content.ReadAsStreamAsync());
+            return Encoding.UTF8.GetString(decompressedData);
         }
 
         public async Task<Models.APIChannels.ApiResponse> GetChannelsList()
@@ -63,28 +58,12 @@ namespace OpenFM_API_Crawler.Services
             return data;
         }
 
-        public static byte[] ReadFully(Stream input)
-        {
-            byte[] buffer = new byte[16 * 1024];
-            using (MemoryStream ms = new MemoryStream())
-            {
-                int read;
-                while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
-                {
-                    ms.Write(buffer, 0, read);
-                }
-                return ms.ToArray();
-            }
-        }
-
         private byte[] DecompressStream(Stream compressedStream)
         {
-            using (var zipStream = new GZipStream(compressedStream, CompressionMode.Decompress))
-            using (var resultStream = new MemoryStream())
-            {
-                zipStream.CopyTo(resultStream);
-                return resultStream.ToArray();
-            }
+            using var zipStream = new GZipStream(compressedStream, CompressionMode.Decompress);
+            using var resultStream = new MemoryStream();
+            zipStream.CopyTo(resultStream);
+            return resultStream.ToArray();
         }
     }
 }
