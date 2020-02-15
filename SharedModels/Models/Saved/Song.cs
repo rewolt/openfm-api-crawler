@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace SharedModels.Models.SavedObjects
+namespace SharedModels.Models.Saved
 {
     [Serializable]
     public class Song
@@ -10,6 +8,7 @@ namespace SharedModels.Models.SavedObjects
         public string Name { get; set; }
         public string Album { get; set; }
         public string Artist { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         public override string ToString()
         {

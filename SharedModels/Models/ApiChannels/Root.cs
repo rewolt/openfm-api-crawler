@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OpenFM_API_Crawler.Models.APIChannels
+namespace SharedModels.Models.ApiChannels
 {
-    class ApiResponse
+    public class Root
     {
         public List<Channel> Channels { get; set; }
         public List<Group> Groups { get; set; }

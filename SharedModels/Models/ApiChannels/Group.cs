@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OpenFM_API_Crawler.Models.APIChannels
+namespace SharedModels.Models.ApiChannels
 {
-    class Group
+    public class Group
     {
         public string Name { get; set; }
         public Params2 Params { get; set; }

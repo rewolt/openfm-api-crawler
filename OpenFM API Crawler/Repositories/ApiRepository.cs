@@ -44,17 +44,17 @@ namespace OpenFM_API_Crawler.Repositories
             return Encoding.UTF8.GetString(decompressedData);
         }
 
-        public async Task<Models.APIChannels.ApiResponse> GetChannelsList()
+        public async Task<SharedModels.Models.ApiChannels.Root> GetChannelsList()
         {
             var json = await GetText(_apiChannelsList);
-            var data = Newtonsoft.Json.JsonConvert.DeserializeObject<Models.APIChannels.ApiResponse>(json);
+            var data = Newtonsoft.Json.JsonConvert.DeserializeObject<SharedModels.Models.ApiChannels.Root>(json);
             return data;
         }
 
-        public async Task<SharedModels.Models.API.ApiResponse> GetChannelsData()
+        public async Task<SharedModels.Models.ApiSongs.Root> GetChannelsData()
         {
             var json = await GetText(_apiChannelsData);
-            var data = Newtonsoft.Json.JsonConvert.DeserializeObject<SharedModels.Models.API.ApiResponse>(json);
+            var data = Newtonsoft.Json.JsonConvert.DeserializeObject<SharedModels.Models.ApiSongs.Root>(json);
             return data;
         }
 

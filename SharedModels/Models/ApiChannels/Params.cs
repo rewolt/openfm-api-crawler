@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OpenFM_API_Crawler.Models.APIChannels
+namespace SharedModels.Models.ApiChannels
 {
-    class Params
+    public class Params
     {
         public int Attractiveness_prio { get; set; }
         public int Recommended_prio { get; set; }

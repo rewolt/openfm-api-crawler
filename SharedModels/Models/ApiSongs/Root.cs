@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SharedModels.Models.API
+namespace SharedModels.Models.ApiSongs
 {
-    public class ApiResponse
+    public class Root
     {
         public List<Channel> Channels { get; set; }
         public double Creation_time { get; set; }

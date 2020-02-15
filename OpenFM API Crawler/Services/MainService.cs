@@ -1,5 +1,8 @@
 ﻿using OpenFM_API_Crawler.Repositories;
+using SharedModels.Models.Saved;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,6 +12,7 @@ namespace OpenFM_API_Crawler.Services
     {
         private readonly ApiRepository _apiRepository;
         private readonly FileRepository _fileRepository;
+        private readonly DateTime _date = DateTime.UtcNow;
         public MainService()
         {
             _apiRepository = new ApiRepository();
@@ -16,73 +20,63 @@ namespace OpenFM_API_Crawler.Services
         }
         public async Task Execute()
         {
-
-            var openChannelsList = await _apiRepository.GetChannelsList();
+            var openChannels = await _apiRepository.GetChannelsList();
             var openChannelsData = await _apiRepository.GetChannelsData();
+            var localChannelsData = _fileRepository.Read();
 
-            if (openChannelsList == null || openChannelsData == null)
+            AddNewChannels(openChannels, localChannelsData);
+            AddNewSongs(openChannels, openChannelsData, localChannelsData);
+            _fileRepository.Save(localChannelsData);
+        }
+
+        private void AddNewSongs(SharedModels.Models.ApiChannels.Root openChannels, SharedModels.Models.ApiSongs.Root openChannelsData, List<SharedModels.Models.Saved.Channel> localChannelsData)
+        {
+            foreach (var localChannel in localChannelsData)
             {
-                Console.WriteLine("Server returned null json");
-                Console.ReadKey();
-                return;
-            }
+                IEnumerable<Song> possibleNewSongsInChannel = null;
+
+                possibleNewSongsInChannel = openChannelsData.Channels
+                .SingleOrDefault(x => x.Id == localChannel.Id)
+                ?.Tracks.Select(x => new Song
+                {
+                    Album = x.Song.Album.Title,
+                    Artist = x.Song.Artist,
+                    Name = x.Song.Title,
+                    CreatedAt = _date
+                });
 
 
-
-            var localChannels = _fileRepository.Read();
-
-            var joinedChannels =
-                (
-                    from openChannel in openChannelsList.Channels
-                    join localChannel in localChannels on openChannel.Id equals localChannel.Id
-                    select openChannel
-                ).ToArray();
-            var missingChannels = openChannelsList.Channels.Except(joinedChannels);
-
-            localChannels.AddRange(missingChannels.Select(x => new SharedModels.Models.SavedObjects.Channel { Id = x.Id, Name = x.Name }));
-
-            for (int i = 0; i < localChannels.Count; i++)
-            {
-                if (!openChannelsData.Channels.Any(x => x.Id == localChannels[i].Id))
+                if (possibleNewSongsInChannel == null || possibleNewSongsInChannel.Count() == 0)
                     continue;
 
-                localChannels[i].Name = openChannelsList.Channels.Where(x => x.Id == localChannels[i].Id).First().Name;
+                var newSongs = possibleNewSongsInChannel.Except(localChannel.Songs, new SongsComparer());
+                localChannel.Songs.AddRange(newSongs);
+            }
+        }
 
-                var openTracks = openChannelsData.Channels.Where(x => x.Id == localChannels[i].Id).Single().Tracks.ToArray();
-                var joinedTracks =
-                    (
-                        from openSong in openTracks
-                        join localSong in localChannels[i].Songs on
-                        new
-                        {
-                            Artist = openSong.Song.Artist ?? "",
-                            Album = openSong.Song.Album == null ? "" : openSong.Song.Album.Title,
-                            Name = openSong.Song.Title ?? ""
-                        }
-                        equals
-                        new
-                        {
-                            Artist = localSong.Artist,
-                            Album = localSong.Album,
-                            Name = localSong.Name
-                        }
-                        select openSong
-                    ).ToArray();
-                var missingSongs = openTracks.Except(joinedTracks);
+        private void AddNewChannels(SharedModels.Models.ApiChannels.Root openChannels, List<Channel> channels)
+        {
+            var missingChannelsIds =
+                openChannels.Channels
+                .Select(x => x.Id)
+                .Except(channels.Select(x => x.Id));
 
-                localChannels[i].Songs
-                    .AddRange(missingSongs.Select(x =>
-                    new SharedModels.Models.SavedObjects.Song
-                    {
-                        Album = x.Song.Album == null ? "" : x.Song.Album.Title,
-                        Artist = x.Song.Artist ?? "",
-                        Name = x.Song.Title ?? ""
-                    }));
+            channels.AddRange(
+                channels.Where(x => missingChannelsIds.Contains(x.Id))
+                        .Select(x => new Channel { Id = x.Id, Name = x.Name }));
+        }
+
+        private class SongsComparer : IEqualityComparer<Song>
+        {
+            public bool Equals([AllowNull] Song x, [AllowNull] Song y)
+            {
+                return x.Album == y.Album && x.Artist == y.Artist && x.Name == y.Name;
             }
 
-
-            _fileRepository.Save(localChannels);
-            Console.WriteLine("Done");
+            public int GetHashCode([DisallowNull] Song obj)
+            {
+                return obj.Name.GetHashCode() ^ obj.Album.GetHashCode() ^ obj.Artist.GetHashCode();
+            }
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SharedModels.Models.API
+namespace SharedModels.Models.ApiSongs
 {
     public class Track
     {
