@@ -25,31 +25,29 @@ namespace OpenFM_API_Crawler.Services
             var localChannelsData = _fileRepository.Read();
 
             AddNewChannels(openChannels, localChannelsData);
-            AddNewSongs(openChannels, openChannelsData, localChannelsData);
+            AddNewSongs(openChannelsData, localChannelsData);
             _fileRepository.Save(localChannelsData);
         }
 
-        private void AddNewSongs(SharedModels.Models.ApiChannels.Root openChannels, SharedModels.Models.ApiSongs.Root openChannelsData, List<SharedModels.Models.Saved.Channel> localChannelsData)
+        private void AddNewSongs(SharedModels.Models.ApiSongs.Root openChannelsData, List<Channel> localChannelsData)
         {
             foreach (var localChannel in localChannelsData)
             {
-                IEnumerable<Song> possibleNewSongsInChannel = null;
-
-                possibleNewSongsInChannel = openChannelsData.Channels
+                var possibleNewSongs = openChannelsData.Channels
                 .SingleOrDefault(x => x.Id == localChannel.Id)
                 ?.Tracks.Select(x => new Song
                 {
-                    Album = x.Song.Album.Title,
+                    Album = x.Song.Album?.Title ?? "",
                     Artist = x.Song.Artist,
                     Name = x.Song.Title,
                     CreatedAt = _date
-                });
+                })
+                .ToList();
 
-
-                if (possibleNewSongsInChannel == null || possibleNewSongsInChannel.Count() == 0)
+                if (possibleNewSongs == null || possibleNewSongs.Count == 0)
                     continue;
 
-                var newSongs = possibleNewSongsInChannel.Except(localChannel.Songs, new SongsComparer());
+                var newSongs = possibleNewSongs.Except(localChannel.Songs, new SongsComparer());
                 localChannel.Songs.AddRange(newSongs);
             }
         }
