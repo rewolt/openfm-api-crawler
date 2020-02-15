@@ -22,7 +22,7 @@ namespace OpenFM_Results_Viewer
             RefreshTree(channelsList);
         }
 
-        private void SortList(List<SharedModels.Models.SavedObjects.Channel> channelsList)
+        private void SortList(List<SharedModels.Models.Saved.Channel> channelsList)
         {
             channelsList.Sort((x, y) => { return x.Name.CompareTo(y.Name); });
 
@@ -43,7 +43,7 @@ namespace OpenFM_Results_Viewer
             System.Diagnostics.Process.Start(youtubeUrl + artistTitle);
         }
 
-        private void RefreshTree(List<SharedModels.Models.SavedObjects.Channel> channelsList)
+        private void RefreshTree(List<SharedModels.Models.Saved.Channel> channelsList)
         {
             treeView.Nodes.Clear();
 
@@ -52,20 +52,20 @@ namespace OpenFM_Results_Viewer
                 var node = treeView.Nodes.Add(channel.Id.ToString(), channel.Name);
                 foreach (var song in channel.Songs)
                 {
-                    var childNode = node.Nodes.Add($"[{song.Artist}] ({song.Album}) {song.Name}");
+                    var childNode = node.Nodes.Add($"[{song.Artist}] ({song.Album}) {song.Name} {song.CreatedAt.ToString("yy-MM-dd HH:mm")}");
                 }
             }
         }
 
-        private List<SharedModels.Models.SavedObjects.Channel> ReadFromLocal()
+        private List<SharedModels.Models.Saved.Channel> ReadFromLocal()
         {
             var fullPath = _saveDirectory + "/" + _fileName;
-            var list = new List<SharedModels.Models.SavedObjects.Channel>();
+            var list = new List<SharedModels.Models.Saved.Channel>();
 
             if (!File.Exists(fullPath))
                 return list;
 
-            list = JsonConvert.DeserializeObject<List<SharedModels.Models.SavedObjects.Channel>>(File.ReadAllText(fullPath));
+            list = JsonConvert.DeserializeObject<List<SharedModels.Models.Saved.Channel>>(File.ReadAllText(fullPath));
             return list;
         }
 
