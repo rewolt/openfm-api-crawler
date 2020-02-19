@@ -35,24 +35,30 @@ namespace OpenFM_Results_Viewer
         {
             var youtubeUrl = "https://www.youtube.com/results?search_query=";
 
-            var artist = e.Node.Text.Substring(1, e.Node.Text.IndexOf("] ") -1);
-            var title = e.Node.Text.Substring(e.Node.Text.LastIndexOf(") ") + 2);
-
-            var artistTitle = artist + " " + title;
-            artistTitle = System.Net.WebUtility.UrlEncode(artistTitle);
-            System.Diagnostics.Process.Start(youtubeUrl + artistTitle);
+            var song = e.Node.Tag as SharedModels.Models.Saved.Song;
+            var query = song.Artist + " " + song.Name;
+            
+            var encodedQuery = System.Net.WebUtility.UrlEncode(query);
+            System.Diagnostics.Process.Start(youtubeUrl + encodedQuery);
         }
 
         private void RefreshTree(List<SharedModels.Models.Saved.Channel> channelsList)
         {
             treeView.Nodes.Clear();
+            var date = DateTime.Now;
 
             foreach(var channel in channelsList)
             {
                 var node = treeView.Nodes.Add(channel.Id.ToString(), channel.Name);
                 foreach (var song in channel.Songs)
                 {
-                    var childNode = node.Nodes.Add($"[{song.Artist}] ({song.Album}) {song.Name} {song.CreatedAt.ToString("yy-MM-dd HH:mm")}");
+                    var childNode = node.Nodes.Add($"[{song.Artist}] ({song.Album}) {song.Name}");
+                    childNode.Tag = song;
+                    if (song.CreatedAt > new DateTime(date.Year, date.Month, date.Day))
+                    {
+                        node.BackColor = System.Drawing.Color.Yellow;
+                        childNode.BackColor = System.Drawing.Color.Yellow;
+                    }
                 }
             }
         }
