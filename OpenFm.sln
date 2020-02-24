@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenFM API Crawler", "OpenF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenFM Results Viewer", "OpenFM Results Viewer\OpenFM Results Viewer.csproj", "{B4753F87-1111-4FDC-B06E-531AE7D497BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenFM WPF Results Viewer", "OpenFM WPF Results Viewer\OpenFM WPF Results Viewer.csproj", "{DDCF56B4-CF9C-4340-AF71-A893438F8B6C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedModels", "SharedModels\SharedModels.csproj", "{84C34A44-661B-47AA-BDF4-3DE86F5AD5C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenFM Youtube Downloader", "OpenFM Youtube Downloader\OpenFM Youtube Downloader.csproj", "{A25DBA47-4AC3-4701-BD16-665A5FEBB052}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,14 +25,14 @@ Global
 		{B4753F87-1111-4FDC-B06E-531AE7D497BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4753F87-1111-4FDC-B06E-531AE7D497BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4753F87-1111-4FDC-B06E-531AE7D497BE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DDCF56B4-CF9C-4340-AF71-A893438F8B6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DDCF56B4-CF9C-4340-AF71-A893438F8B6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DDCF56B4-CF9C-4340-AF71-A893438F8B6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DDCF56B4-CF9C-4340-AF71-A893438F8B6C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{84C34A44-661B-47AA-BDF4-3DE86F5AD5C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{84C34A44-661B-47AA-BDF4-3DE86F5AD5C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84C34A44-661B-47AA-BDF4-3DE86F5AD5C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84C34A44-661B-47AA-BDF4-3DE86F5AD5C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A25DBA47-4AC3-4701-BD16-665A5FEBB052}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A25DBA47-4AC3-4701-BD16-665A5FEBB052}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A25DBA47-4AC3-4701-BD16-665A5FEBB052}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A25DBA47-4AC3-4701-BD16-665A5FEBB052}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
