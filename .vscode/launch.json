@@ -4,8 +4,19 @@
    // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
    "version": "0.2.0",
    "configurations": [
+       {
+           "name": "OpenFM Youtube Downloader",
+           "type": "coreclr",
+           "request": "launch",
+           "preLaunchTask": "build",
+           "program": "${workspaceFolder}/OpenFM Youtube Downloader/bin/Debug/netcoreapp3.1/OpenFM Youtube Downloader.dll",
+           "args": [],
+           "cwd": "${workspaceFolder}/OpenFM Youtube Downloader",
+           "stopAtEntry": false,
+           "console": "externalTerminal"
+       },
         {
-            "name": ".NET Core Launch (console)",
+            "name": "OpenFM API Crawler",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
@@ -14,7 +25,7 @@
             "args": [],
             "cwd": "${workspaceFolder}/OpenFM API Crawler",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
-            "console": "internalConsole",
+            "console": "externalTerminal",
             "stopAtEntry": false
         },
         {

@@ -60,7 +60,7 @@ namespace OpenFM_API_Crawler.Services
                 .Except(channels.Select(x => x.Id));
 
             channels.AddRange(
-                channels.Where(x => missingChannelsIds.Contains(x.Id))
+                openChannels.Channels.Where(x => missingChannelsIds.Contains(x.Id))
                         .Select(x => new Channel { Id = x.Id, Name = x.Name }));
         }
 
