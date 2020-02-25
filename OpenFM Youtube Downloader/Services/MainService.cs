@@ -31,7 +31,12 @@ namespace OpenFM_Youtube_Downloader.Services
                 {
                     var searchPattern = $"{song.Name} {song.Artist}";
                     var songsUris = _youtubeHttpRepository.GetSongsByWordKeys(searchPattern);
+                    var bestMatch = songsUris.FirstOrDefault();
 
+                    if (bestMatch is null)
+                        continue;
+                    
+                    //var cos = _youtubeHttpRepository.
 
                 }
             }
