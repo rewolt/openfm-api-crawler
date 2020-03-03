@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenFM_API_Crawler_Service.Factories;
+using System;
 using System.IO;
 using System.IO.Compression;
 using System.Net.Http;
@@ -8,31 +9,17 @@ using System.Threading.Tasks;
 
 namespace OpenFM_API_Crawler_Service.Repositories
 {
-    class ApiRepository
+    public class ApiRepository
     {
         private readonly string _apiUrl = "https://open.fm/api/";
         private readonly string _apiChannelsList = "static/stations/stations_new.json";
         private readonly string _apiChannelsData = "api-ext/v2/channels/long.json";
         private readonly HttpClient _client;
 
-        public ApiRepository()
+        public ApiRepository(HttpClientFactory httpClientFactory)
         {
-            _client = new HttpClient();
-            InitializeHttpClient();
-        }
-
-        private void InitializeHttpClient()
-        {
+            _client = httpClientFactory.GetHttpClient();
             _client.BaseAddress = new Uri(_apiUrl);
-
-            _client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("Mozilla", "5.0"));
-            _client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("AppleWebKit", "537.36"));
-            _client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("Chrome", "64.0.3282.119"));
-            _client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("Safari", "537.36"));
-
-            _client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
-            _client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
-            _client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("pl-PL"));
         }
 
         public async Task<string> GetText(string apiMethod)
