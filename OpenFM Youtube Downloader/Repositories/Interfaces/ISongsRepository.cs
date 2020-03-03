@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using SharedModels.Models.Saved;
 
-namespace OpenFM_Youtube_Downloader.Repositories
+namespace OpenFM_Youtube_Downloader.Repositories.Interfaces
 {
     interface ISongsRepository
     {

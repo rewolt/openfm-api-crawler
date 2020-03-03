@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace OpenFM_Youtube_Downloader.Repositories
+namespace OpenFM_Youtube_Downloader.Repositories.Interfaces
 {
     interface IFileRepository
     {
