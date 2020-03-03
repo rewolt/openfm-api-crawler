@@ -9,7 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenFM Results Viewer", "Op
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedModels", "SharedModels\SharedModels.csproj", "{84C34A44-661B-47AA-BDF4-3DE86F5AD5C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenFM Youtube Downloader", "OpenFM Youtube Downloader\OpenFM Youtube Downloader.csproj", "{A25DBA47-4AC3-4701-BD16-665A5FEBB052}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenFM Youtube Downloader", "OpenFM Youtube Downloader\OpenFM Youtube Downloader.csproj", "{A25DBA47-4AC3-4701-BD16-665A5FEBB052}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenFM API Crawler Service", "OpenFM API Crawler Service\OpenFM API Crawler Service.csproj", "{4CBB7ADB-4711-43CF-9CA0-BFE1F6AE7834}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{A25DBA47-4AC3-4701-BD16-665A5FEBB052}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A25DBA47-4AC3-4701-BD16-665A5FEBB052}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A25DBA47-4AC3-4701-BD16-665A5FEBB052}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CBB7ADB-4711-43CF-9CA0-BFE1F6AE7834}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CBB7ADB-4711-43CF-9CA0-BFE1F6AE7834}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CBB7ADB-4711-43CF-9CA0-BFE1F6AE7834}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CBB7ADB-4711-43CF-9CA0-BFE1F6AE7834}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
