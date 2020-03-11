@@ -1,4 +1,5 @@
 ﻿using OpenFM_API_Crawler.Repositories;
+using SharedModels.Models.DTO;
 using SharedModels.Models.Saved;
 using System;
 using System.Collections.Generic;

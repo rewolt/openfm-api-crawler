@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using SharedModels.Models.DTO;
 using SharedModels.Models.Saved;
 
 namespace OpenFM_Youtube_Downloader.Repositories.Interfaces

@@ -1,21 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using LiteDB;
+using System;
 
 namespace SharedModels.Models.Saved
 {
     public class Channel
     {
-        public int Id { get; set; }
-        public string Name { get; set;}
-        public List<Song> Songs { get; set; } 
-
-        public Channel()
-        {
-            Songs = new List<Song>();
-        }
-
-        public override string ToString()
-        {
-            return $"Name ({Songs.Count})";
-        }
+        public ObjectId _id { get; set; }
+        public string Name { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime LastSeen { get; set; }
     }
 }

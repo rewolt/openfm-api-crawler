@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SharedModels.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,7 +23,7 @@ namespace OpenFM_Results_Viewer
             RefreshTree(channelsList);
         }
 
-        private void SortList(List<SharedModels.Models.Saved.Channel> channelsList)
+        private void SortList(List<Channel> channelsList)
         {
             channelsList.Sort((x, y) => { return x.Name.CompareTo(y.Name); });
 
@@ -35,14 +36,14 @@ namespace OpenFM_Results_Viewer
         {
             var youtubeUrl = "https://www.youtube.com/results?search_query=";
 
-            var song = e.Node.Tag as SharedModels.Models.Saved.Song;
+            var song = e.Node.Tag as Song;
             var query = song.Artist + " " + song.Name;
             
             var encodedQuery = System.Net.WebUtility.UrlEncode(query);
             System.Diagnostics.Process.Start(youtubeUrl + encodedQuery);
         }
 
-        private void RefreshTree(List<SharedModels.Models.Saved.Channel> channelsList)
+        private void RefreshTree(List<Channel> channelsList)
         {
             treeView.Nodes.Clear();
             var date = DateTime.Now;
@@ -63,15 +64,15 @@ namespace OpenFM_Results_Viewer
             }
         }
 
-        private List<SharedModels.Models.Saved.Channel> ReadFromLocal()
+        private List<Channel> ReadFromLocal()
         {
             var fullPath = _saveDirectory + "/" + _fileName;
-            var list = new List<SharedModels.Models.Saved.Channel>();
+            var list = new List<Channel>();
 
             if (!File.Exists(fullPath))
                 return list;
 
-            list = JsonConvert.DeserializeObject<List<SharedModels.Models.Saved.Channel>>(File.ReadAllText(fullPath));
+            list = JsonConvert.DeserializeObject<List<Channel>>(File.ReadAllText(fullPath));
             return list;
         }
 

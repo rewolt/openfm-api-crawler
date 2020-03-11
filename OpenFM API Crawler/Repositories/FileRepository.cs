@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using SharedModels.Models.DTO;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
@@ -18,19 +19,19 @@ namespace OpenFM_API_Crawler.Repositories
             _fileFullPath = Path.Combine(_config["Database:path"], _config["Database:fileName"]);
         }
 
-        public void Save(List<SharedModels.Models.Saved.Channel> channels)
+        public void Save(List<Channel> channels)
         {
             File.WriteAllText(_fileFullPath, JsonSerializer.Serialize(channels));
         }
 
-        public List<SharedModels.Models.Saved.Channel> Read()
+        public List<Channel> Read()
         {
-            var list = new List<SharedModels.Models.Saved.Channel>();
+            var list = new List<Channel>();
 
             if (!File.Exists(_fileFullPath))
                 return list;
 
-            list = JsonSerializer.Deserialize<List<SharedModels.Models.Saved.Channel>>(File.ReadAllText(_fileFullPath));
+            list = JsonSerializer.Deserialize<List<Channel>>(File.ReadAllText(_fileFullPath));
             return list;
         }
     }

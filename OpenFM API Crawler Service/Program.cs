@@ -5,8 +5,7 @@ using OpenFM_API_Crawler_Service.HostedServices;
 using OpenFM_API_Crawler_Service.Repositories;
 using Serilog;
 using Serilog.Core;
-using Serilog.Extensions.Logging;
-using Serilog.Formatting.Compact;
+using Serilog.Formatting.Json;
 using System;
 using System.IO;
 using System.Reflection;
@@ -15,7 +14,6 @@ namespace OpenFM_API_Crawler_Service
 {
     class Program
     {
-        //static readonly LoggerProviderCollection Providers = new LoggerProviderCollection();
         static void Main(string[] args)
         {
             ConfigureSerilog();
@@ -35,6 +33,7 @@ namespace OpenFM_API_Crawler_Service
             services.AddSingleton<ILogger>((services) => ConfigureSerilog());
             services.AddTransient<HttpClientFactory>();
             services.AddTransient<ApiRepository>();
+            services.AddScoped<LocalRepository>();
 
             return services.BuildServiceProvider();
         }
@@ -49,9 +48,8 @@ namespace OpenFM_API_Crawler_Service
                 .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Information)
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
-                //.WriteTo.Providers(providers: Providers)
                 .WriteTo.File(
-                    formatter: new CompactJsonFormatter(),
+                    formatter: new JsonFormatter(),
                     path: logPath,
                     rollingInterval: RollingInterval.Day,
                     retainedFileCountLimit: 15,
