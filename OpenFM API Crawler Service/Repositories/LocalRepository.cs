@@ -4,10 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 
 namespace OpenFM_API_Crawler_Service.Repositories
 {
-    public class LocalRepository : IDisposable
+    public class LocalRepository : ILocalRepository, IDisposable
     {
         private readonly string _appPath = new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName;
         private const string _dbFolder = "Database";
@@ -38,10 +39,11 @@ namespace OpenFM_API_Crawler_Service.Repositories
 
         public void UpsertChannel(SharedModels.Models.DTO.Channel channel)
         {
+            Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo("pl-PL");
             var now = DateTime.UtcNow;
 
             var channels = _db.GetCollection<SharedModels.Models.Saved.Channel>("channels");
-            var foundChannel = channels.FindOne(x => x.Name.Equals(channel.Name, StringComparison.Ordinal));
+            var foundChannel = channels.FindOne(x => x.Name == channel.Name);
             if(foundChannel is null)
             {
                 var newChannel = new SharedModels.Models.Saved.Channel
@@ -60,18 +62,18 @@ namespace OpenFM_API_Crawler_Service.Repositories
                 channels.Update(foundChannel);
                 //_logger.Information($"Channel \"{foundChannel.Name}\" already exists.");
             }
-            _db.Commit();
         }
 
         public void UpsertSong(SharedModels.Models.DTO.Song song)
         {
+            Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo("pl-PL");
             var now = DateTime.UtcNow;
 
             var songs = _db.GetCollection<SharedModels.Models.Saved.Song>("songs");
             var foundSong = songs
-                .FindOne(x => x.Name.Equals(song.Name, StringComparison.Ordinal)
-                           && x.Album.Equals(song.Album, StringComparison.Ordinal)
-                           && x.Artist.Equals(song.Artist, StringComparison.Ordinal));
+                .FindOne(x => x.Name == song.Name
+                           && x.Album == song.Album
+                           && x.Artist == song.Artist);
 
             if(foundSong is null)
             {
@@ -101,6 +103,7 @@ namespace OpenFM_API_Crawler_Service.Repositories
 
         private void CreateDatabase()
         {
+            Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo("pl-PL");
             try
             {
                 _db = new LiteDatabase(_dbFullPath);

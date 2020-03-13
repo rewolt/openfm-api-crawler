@@ -13,9 +13,9 @@ namespace OpenFM_API_Crawler_Service.HostedServices
     {
         private readonly ApiRepository _apiRepository;
         private readonly ILogger _logger;
-        private readonly LocalRepository _localRepository;
+        private readonly ILocalRepository _localRepository;
 
-        public CrawlerService(ApiRepository apiRepository, ILogger logger, LocalRepository localRepository)
+        public CrawlerService(ApiRepository apiRepository, ILogger logger, ILocalRepository localRepository)
         {
             _apiRepository = apiRepository;
             _logger = logger;

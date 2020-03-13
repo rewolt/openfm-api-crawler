@@ -33,7 +33,7 @@ namespace OpenFM_API_Crawler_Service
             services.AddSingleton<ILogger>((services) => ConfigureSerilog());
             services.AddTransient<HttpClientFactory>();
             services.AddTransient<ApiRepository>();
-            services.AddScoped<LocalRepository>();
+            services.AddTransient<ILocalRepository, LocalRepository>();
 
             return services.BuildServiceProvider();
         }
