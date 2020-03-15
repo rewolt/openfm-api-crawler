@@ -4,6 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>OpenFM_API_Crawler_Service</RootNamespace>
+    <AssemblyName>openfmapicrawler</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

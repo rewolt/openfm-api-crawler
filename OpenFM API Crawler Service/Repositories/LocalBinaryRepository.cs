@@ -96,7 +96,7 @@ namespace OpenFM_API_Crawler_Service.Repositories
 
         private void ReadData()
         {
-            _logger.Information($"{nameof(LocalBinaryRepository)} - Reading data...");
+            _logger.Information($"{nameof(LocalBinaryRepository)} - Reading data from {_dbFullPath}...");
             try
             {
                 if (!File.Exists(_dbFullPath))
@@ -129,7 +129,7 @@ namespace OpenFM_API_Crawler_Service.Repositories
 
         public void SaveData()
         {
-            _logger.Information($"{nameof(LocalBinaryRepository)} - Saving data...");
+            _logger.Information($"{nameof(LocalBinaryRepository)} - Saving data into {_dbFullPath}...");
             try
             {
                 if (!File.Exists(_dbFullPath))
