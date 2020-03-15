@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace OpenFM_API_Crawler_Service.Repositories
 {
@@ -6,7 +7,7 @@ namespace OpenFM_API_Crawler_Service.Repositories
     {
         IEnumerable<SharedModels.Models.Saved.Channel> GetChannels();
         IEnumerable<SharedModels.Models.Saved.Song> GetSongs();
-        void UpsertChannel(SharedModels.Models.DTO.Channel channel);
-        void UpsertSong(SharedModels.Models.DTO.Song song);
+        void UpsertChannel(SharedModels.Models.DTO.Channel channel, DateTime lastSeen);
+        void UpsertSong(SharedModels.Models.DTO.Song song, DateTime lastSeen);
     }
 }

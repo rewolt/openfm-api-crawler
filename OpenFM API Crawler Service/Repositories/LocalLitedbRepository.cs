@@ -8,7 +8,7 @@ using System.Threading;
 
 namespace OpenFM_API_Crawler_Service.Repositories
 {
-    public class LocalRepository : ILocalRepository, IDisposable
+    public class LocalLitedbRepository : ILocalRepository, IDisposable
     {
         private readonly string _appPath = new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName;
         private const string _dbFolder = "Database";
@@ -17,7 +17,7 @@ namespace OpenFM_API_Crawler_Service.Repositories
         private readonly ILogger _logger;
         private ILiteDatabase _db;
 
-        public LocalRepository(ILogger logger)
+        public LocalLitedbRepository(ILogger logger)
         {
             _logger = logger;
             _dbFullPath = Path.Combine(_appPath, _dbFolder, _databseName);
@@ -37,19 +37,18 @@ namespace OpenFM_API_Crawler_Service.Repositories
             return songs.FindAll();
         }
 
-        public void UpsertChannel(SharedModels.Models.DTO.Channel channel)
+        public void UpsertChannel(SharedModels.Models.DTO.Channel channel, DateTime lastSeen)
         {
             Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo("pl-PL");
-            var now = DateTime.UtcNow;
 
-            var channels = _db.GetCollection<SharedModels.Models.Saved.Channel>("channels");
+            var channels = _db.GetCollection<SharedModels.Models.Saved.LitedbChannel>("channels");
             var foundChannel = channels.FindOne(x => x.Name == channel.Name);
             if(foundChannel is null)
             {
-                var newChannel = new SharedModels.Models.Saved.Channel
+                var newChannel = new SharedModels.Models.Saved.LitedbChannel
                 {
-                    LastSeen = now,
-                    CreatedAt = now,
+                    LastSeen = lastSeen,
+                    CreatedAt = lastSeen,
                     Name = channel.Name
                 };
                 
@@ -58,18 +57,16 @@ namespace OpenFM_API_Crawler_Service.Repositories
             }
             else
             {
-                foundChannel.LastSeen = now;
+                foundChannel.LastSeen = lastSeen;
                 channels.Update(foundChannel);
-                //_logger.Information($"Channel \"{foundChannel.Name}\" already exists.");
             }
         }
 
-        public void UpsertSong(SharedModels.Models.DTO.Song song)
+        public void UpsertSong(SharedModels.Models.DTO.Song song, DateTime lastSeen)
         {
             Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo("pl-PL");
-            var now = DateTime.UtcNow;
 
-            var songs = _db.GetCollection<SharedModels.Models.Saved.Song>("songs");
+            var songs = _db.GetCollection<SharedModels.Models.Saved.LitedbSong>("songs");
             var foundSong = songs
                 .FindOne(x => x.Name == song.Name
                            && x.Album == song.Album
@@ -77,10 +74,10 @@ namespace OpenFM_API_Crawler_Service.Repositories
 
             if(foundSong is null)
             {
-                var newSong = new SharedModels.Models.Saved.Song
+                var newSong = new SharedModels.Models.Saved.LitedbSong
                 {
-                    LastSeen = now,
-                    CreatedAt = now,
+                    LastSeen = lastSeen,
+                    CreatedAt = lastSeen,
                     Album = song.Album,
                     Artist = song.Artist,
                     Name = song.Name,
@@ -95,9 +92,8 @@ namespace OpenFM_API_Crawler_Service.Repositories
                 if (!foundSong.OpenfmChannelIds.Contains(song.OpenfmChannelId))
                     foundSong.OpenfmChannelIds.Add(song.OpenfmChannelId);
 
-                foundSong.LastSeen = now;
+                foundSong.LastSeen = lastSeen;
                 songs.Update(foundSong);
-                //_logger.Information($"Song \"{song.Artist} - {song.Name}\" already exists.");
             }
         }
 
@@ -130,7 +126,7 @@ namespace OpenFM_API_Crawler_Service.Repositories
                 disposedValue = true;
             }
         }
-        ~LocalRepository()
+        ~LocalLitedbRepository()
         {
             Dispose(false);
         }
@@ -140,6 +136,7 @@ namespace OpenFM_API_Crawler_Service.Repositories
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+        
         #endregion
     }
 }
