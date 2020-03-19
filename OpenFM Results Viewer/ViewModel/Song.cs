@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace SharedModels.Models.Saved
+namespace OpenFM_Results_Viewer.ViewModel
 {
-    [Serializable]
-    public class Song
+    class Song
     {
-        public List<int> OpenfmChannelIds { get; set; }
         public string Name { get; set; }
-        public string Album { get; set; }
         public string Artist { get; set; }
+        public string Album { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime LastSeenAt { get; set; }
     }

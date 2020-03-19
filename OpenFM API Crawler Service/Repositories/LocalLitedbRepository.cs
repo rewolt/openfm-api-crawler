@@ -76,7 +76,7 @@ namespace OpenFM_API_Crawler_Service.Repositories
             {
                 var newSong = new SharedModels.Models.Saved.LitedbSong
                 {
-                    LastSeen = lastSeen,
+                    LastSeenAt = lastSeen,
                     CreatedAt = lastSeen,
                     Album = song.Album,
                     Artist = song.Artist,
@@ -92,7 +92,7 @@ namespace OpenFM_API_Crawler_Service.Repositories
                 if (!foundSong.OpenfmChannelIds.Contains(song.OpenfmChannelId))
                     foundSong.OpenfmChannelIds.Add(song.OpenfmChannelId);
 
-                foundSong.LastSeen = lastSeen;
+                foundSong.LastSeenAt = lastSeen;
                 songs.Update(foundSong);
             }
         }

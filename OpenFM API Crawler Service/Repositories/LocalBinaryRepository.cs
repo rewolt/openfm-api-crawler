@@ -21,18 +21,6 @@ namespace OpenFM_API_Crawler_Service.Repositories
         private readonly CancellationTokenSource _cancellationTokenSource;
         private Data _data;
 
-        [Serializable]
-        private struct Data
-        {
-            public List<Channel> _channels;
-            public List<Song> _songs;
-            public Data(List<Channel> channels, List<Song> songs)
-            {
-                _channels = channels;
-                _songs = songs;
-            }
-        }
-
         public LocalBinaryRepository(ILogger logger)
         {
             _logger = logger;
@@ -58,7 +46,7 @@ namespace OpenFM_API_Crawler_Service.Repositories
             var existsingChannel = _data._channels.FirstOrDefault(x => x.Name == channel.Name);
             if (existsingChannel is null)
             {
-                existsingChannel = new Channel { Name = channel.Name, CreatedAt = lastSeen, LastSeen = lastSeen };
+                existsingChannel = new Channel { Id = channel.Id, Name = channel.Name, CreatedAt = lastSeen, LastSeen = lastSeen };
                 _data._channels.Add(existsingChannel);
             }
             else
@@ -81,14 +69,14 @@ namespace OpenFM_API_Crawler_Service.Repositories
                     Artist = song.Artist,
                     Name = song.Name,
                     CreatedAt = lastSeen,
-                    LastSeen = lastSeen,
+                    LastSeenAt = lastSeen,
                     OpenfmChannelIds = new List<int> { song.OpenfmChannelId }
                 };
                 _data._songs.Add(existingSong);
             }
             else
             {
-                existingSong.LastSeen = lastSeen;
+                existingSong.LastSeenAt = lastSeen;
                 if (!existingSong.OpenfmChannelIds.Contains(song.OpenfmChannelId))
                     existingSong.OpenfmChannelIds.Add(song.OpenfmChannelId);
             }

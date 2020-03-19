@@ -111,7 +111,7 @@ namespace OpenFM_API_Crawler_Service.HostedServices
                 var now = DateTime.UtcNow;
 
                 foreach (var channel in channels)
-                    _localRepository.UpsertChannel(new SharedModels.Models.DTO.Channel { Name = channel.Name }, now);
+                    _localRepository.UpsertChannel(new SharedModels.Models.DTO.Channel {Id = channel.Id, Name = channel.Name }, now);
             });
         }
 
